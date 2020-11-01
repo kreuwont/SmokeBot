@@ -86,3 +86,11 @@ typings/
 
 # DynamoDB Local files
 .dynamodb/
+
+# Store files
+db/
+
+# Logs files
+logs/
+
+*.env
