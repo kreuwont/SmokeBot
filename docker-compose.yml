@@ -1,0 +1,12 @@
+version: "3.3"
+services:
+    bot:
+        build: .
+        container_name: smoke_bot_container
+        restart: always
+        volumes: 
+            - "./src:/home/bot/src"
+            - "./logs:/home/bot/logs"
+            - "./db:/home/bot/db"
+        env_file: 
+            - bot-variables.env
