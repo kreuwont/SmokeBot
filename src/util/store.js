@@ -1,5 +1,16 @@
 const Datastore = require('nedb-promises');
+const NodeCache = require("node-cache");
+
 const db = Datastore.create('./db/chats.db');
+const cache = new NodeCache({ checkperiod: 10 });
+
+function GenerateSpamCounterKey(userId) {
+    return `spam_${userId}`;
+}
+
+function HasUserInSpamList(userId) {
+    return cache.has(GenerateSpamCounterKey(userId));
+}
 
 module.exports = {
     AddUser: async function (userId) {
@@ -35,5 +46,24 @@ module.exports = {
     },
     GetAllUsers: async function() {
         return await db.find({ userId: {  $exists: true } });
+    },
+    AddOrIncreaseUserSpamCounter: function(userId) {
+        const key = GenerateSpamCounterKey(userId);
+        let spamCouner = { spam_messages: 1, creation_time: Date.now() };
+        if(HasUserInSpamList(userId)) {
+            spamCouner = cache.take(key);
+            spamCouner.spam_messages++;
+        }
+
+        const ttl = 10;
+        return cache.set(key, spamCouner, ttl);
+    },
+    GetUserSpamCounter: function(userId) {
+        if(!HasUserInSpamList(userId))
+            return 0;
+        return cache.get(GenerateSpamCounterKey(userId));
+    },
+    DeleteFromCache: function(userId) {
+        cache.del(GenerateSpamCounterKey(userId));
     }
 }

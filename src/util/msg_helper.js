@@ -16,12 +16,23 @@ const sendAll = async (text) => {
     });
 };
 
-const isReplyMessage = async(msg) => {
-    return msg.reply_to_message && msg.reply_to_message.from;
+const isReplyMessage = (msg) => {
+    return !!(msg.reply_to_message && msg.reply_to_message.from);
+};
+
+const getUsername = (msg) => {
+    let userName = msg.from.username;
+    if(!userName) 
+    {
+        userName = msg.from.first_name;
+        if(!userName) return;
+    }
+    return userName;
 };
 
 module.exports = {
     getChatId: getChatId,
     sendAll: sendAll,
-    isReplyMessage: isReplyMessage
+    isReplyMessage: isReplyMessage,
+    getUsername: getUsername
 };

@@ -13,6 +13,7 @@
     "dotenv": "^8.2.0",
     "fs": "0.0.1-security",
     "nedb-promises": "^4.0.1",
+    "node-cache": "^5.1.2",
     "node-telegram-bot-api": "^0.40.0",
     "path": "^0.12.7",
     "require-all": "^3.0.0",

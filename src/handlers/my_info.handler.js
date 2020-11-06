@@ -10,7 +10,7 @@ module.exports = async (command, msg) => {
     let userId = msg.from.id;
 
     let preffics = "Вам ";
-    if(msgHelper.isReplyMessage(msg) && userId !== msg.reply_to_message.from.id)
+    if(msgHelper.isReplyMessage(msg))
     {
         userId = msg.reply_to_message.from.id;
         preffics = "Ему ";
